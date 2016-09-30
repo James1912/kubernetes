@@ -46,8 +46,8 @@ give static hostname. Then we have the service that exposes the couchdb cluster.
 
 ```
 kubectl create -f couchdb-petset-headless-service.yaml -f couchdb-petset-service.yaml 
-service "kubetest001-backend" created
-service "kubetest001" created
+service "couchdb001-backend" created
+service "couchdb001" created
 ```
 
 ### Creating the PetSet
@@ -55,30 +55,36 @@ Now that we have the necessary configmaps, secrets and the services created
 let's create the couchdb petset!
 ```
 kubectl create -f couchdb-petset.yaml 
-petset "kubetest001" created
+petset "couchdb001" created
 ```
 You can now head over to the browser and checkout the kubernetes dashboard to
 see the newly create couchdb cluster if you have it running in your kubernetes cluster.
 Alternitively we can see the couchdb pods:
 ```
-kubectl get pods --namespace cloudant
+kubectl get pods
 NAME                                     READY     STATUS    RESTARTS   AGE
-kubetest001-0                            3/3       Running   0          3m
-kubetest001-1                            3/3       Running   0          4m
-kubetest001-2                            3/3       Running   0          4m
+couchdb001-0                            3/3       Running   0          3m
+couchdb001-1                            3/3       Running   0          4m
+couchdb001-2                            3/3       Running   0          4m
 ```
 
 If your running minikube you can discover the cluster address as 
 follows: 
 ```
-minikube service kubetest001 --url
+minikube service couchdb001 --url
 http://192.168.99.102:31391
 ```
+For those not running minikube, you can discover the exsternal IP of the 
+couchdb service like so:
+```
+kubectl get service couchdb001  
+NAME         CLUSTER-IP   EXTERNAL-IP   PORT(S)                             AGE
+couchdb001   10.0.0.226   192.168.1.10  80/TCP,4369/TCP,9100/TCP,5986/TCP   16m
+``` 
 using that: 
 ```
 curl  http://192.168.99.102:31391
 {"couchdb":"Welcome","version":"2.0.0","vendor":{"name":"The Apache Software Foundation"}}
 ```
-
 :tada:
 

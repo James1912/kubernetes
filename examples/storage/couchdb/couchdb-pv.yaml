@@ -1,7 +1,7 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: kubetest001-data-volume
+  name: couchdb001-data-volume
   namespace: default
   labels:
     type: local

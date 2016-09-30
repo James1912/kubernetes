@@ -1,10 +1,10 @@
 apiVersion: "apps/v1alpha1"
 kind: PetSet
 metadata:
-  name: kubetest001
+  name: couchdb001
   namespace: default
 spec:
-  serviceName: kubetest001-backend
+  serviceName: couchdb001-backend
   replicas: 3
   template:
     metadata:
@@ -34,7 +34,7 @@ spec:
               }
             ]'
       labels:
-        cluster: kubetest001
+        cluster: couchdb001
         tier: backend
         app: couchdb
     spec:
@@ -61,9 +61,9 @@ spec:
         - containerPort: 5984
           name: in-tcp-port
         - containerPort: 4369
-          name: EPMD
+          name: epmd
         - containerPort: 9100
-          name: distributed-erlang-port
+          name: erlang-port
         - containerPort: 5986
           name: admin-port
         volumeMounts:

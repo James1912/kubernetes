@@ -3,17 +3,17 @@ kind: Service
 metadata:
   labels:
     app: couchdb
-  name: kubetest001
+  name: couchdb001
   namespace: default
 spec:
   ports:
   - name: in-tcp-port
     port: 80
     targetPort: 5984
-  - name: EPMD
+  - name: epmd
     port: 4369
     targetPort: 4369
-  - name: distributed-erlang-port
+  - name: erlang-port
     port: 9100
     targetPort: 9100
   - name: admin-port
@@ -22,5 +22,5 @@ spec:
   selector:
     tier: backend
     app: couchdb
-    cluster: kubetest001
+    cluster: couchdb001
   type: NodePort

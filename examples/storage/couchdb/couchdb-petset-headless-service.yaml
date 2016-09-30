@@ -5,7 +5,7 @@ metadata:
   labels:
     tier: backend
     app: couchdb
-  name: kubetest001-backend
+  name: couchdb001-backend
   namespace: default
 spec:
   clusterIP: None
@@ -18,4 +18,4 @@ spec:
     targetPort: 5986
   selector:
     app: couchdb
-    cluster: kubetest001
+    cluster: couchdb001
