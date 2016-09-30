@@ -14,7 +14,7 @@ spec:
             {
             "name": "configer-couch",
             "image": "glyndwr/kube-init-couchdb",
-            "command": ["/bin/bash", "-c", "/./configer_couch.sh"],
+            "command": ["/bin/bash", "-c", "./configer_couch.sh"],
             "volumeMounts": [
                 {
                     "name": "core-config",
@@ -97,7 +97,7 @@ spec:
             command:
               - /bin/bash
               - -c
-              - /./join_cluster.py _users
+              - ./join_cluster.py _users
           initialDelaySeconds: 15
           timeoutSeconds: 5
       volumes:
