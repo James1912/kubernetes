@@ -7,4 +7,4 @@ cp /core-config/local.ini $INSTALL_LOCATION/etc/local.ini
 cp /core-config/vm.args $INSTALL_LOCATION/etc/vm.args
 mkdir $INSTALL_LOCATION/etc/local.d
 mkdir $INSTALL_LOCATION/etc/default.d
-sed -i $INSTALL_LOCATION/etc/vm.args -e "s/^\-name db/\-name db@$fqdn/"
+sed -i $INSTALL_LOCATION/etc/vm.args -e "s/^\-name couchdb/\-name couchdb@$fqdn/"

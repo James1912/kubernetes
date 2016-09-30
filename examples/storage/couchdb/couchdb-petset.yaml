@@ -58,20 +58,14 @@ spec:
         name: couchdb
         imagePullPolicy: Always
         ports:
-        - containerPort: 873
-          name: rsync-port
-        - containerPort: 22
-          name: ssh-port
         - containerPort: 5984
           name: in-tcp-port
         - containerPort: 4369
-          name: erlang-port
+          name: EPMD
         - containerPort: 9100
-          name: foo-port
+          name: distributed-erlang-port
         - containerPort: 5986
           name: admin-port
-        - containerPort: 443
-          name: ssl-port
         volumeMounts:
         - mountPath: /core-config/
           name: core-config

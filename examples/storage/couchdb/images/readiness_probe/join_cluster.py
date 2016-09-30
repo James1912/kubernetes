@@ -67,18 +67,18 @@ def populate_nodes_db(pod_hostnames, cluster_admin):
 
 
 def create_system_dbs(cluster_admin, system_dbs):
-    root_url = "http://{0}:5984/{1}"
+    root_url = "http://localhost:5984/{1}"
     s = requests.Session()
     s.auth = cluster_admin
 
     system_dbs.pop(0)
     try:
         for system_db in system_dbs:
-            response = s.get(root_url.format(os.environ['POD_IP'], system_db))
+            response = s.get(root_url.format(system_db))
             if response.status_code == 200:
                 logging.warning("I have the {0} db".format(system_db))
             else:
-                s.put(root_url.format(os.environ['POD_IP'], system_db))
+                s.put(root_url.format(system_db))
     except requests.ConnectionError as e:
         logging.warning(e)
         logging.warning('Could not connect to host {} for creating system dbs'.format(socket.getfqdn(os.environ['POD_IP'])))

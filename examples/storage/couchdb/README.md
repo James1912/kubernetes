@@ -41,7 +41,7 @@ couchdb instances.  To achieve this in Kubernetes petsets are leveraged giving
 every couchdb pod its own DNS name for its lifetime. 
 
 There are two services we need to create for our couchdb cluster.  First 
-theres the headless service for pod to pod discovery using DNS lookup and to 
+there's the headless service for pod to pod discovery using DNS lookup and to 
 give static hostname. Then we have the service that exposes the couchdb cluster. Let us create them:
 
 ```
