@@ -4,11 +4,11 @@ ADD join_cluster.py /
 RUN chmod +x join_cluster.py
 
 RUN apt-get update \
-    && apt-get -y install python python-pip dnsutils \
+    && apt-get -y install python python-pip \
     && apt-get autoclean \
     && apt-get autoremove
 
-RUN pip install requests
+RUN pip install dnspython
 
 WORKDIR /
 

@@ -2,11 +2,10 @@
 """
     Usage:  join_cluster.py dbname dbname ...
 """
-from subprocess import check_output, CalledProcessError
+from dns import resolver, exception
 import requests
 import logging
 import socket
-import json
 import sys
 import os
 
@@ -23,22 +22,18 @@ def main(system_dbs):
 
 def discover_pod_fq_hostnames():
     hostnames = []
-    nslookup_cmd = ["nslookup", "-type=srv"]
     fq_pod_hostname = socket.getfqdn(os.environ['POD_IP'])
     cluster_host = "{}.{}".format(fq_pod_hostname.split('.')[1],
                                   fq_pod_hostname.split('.')[2])
-    nslookup_cmd.append(cluster_host)
-    nslookup = ""
     try:
-        nslookup = check_output(nslookup_cmd)
-    except CalledProcessError as e:
+        dnslookup = resolver.query(cluster_host, "SRV")
+        for raw_hostname in dnslookup:
+            hostnames.append(str(raw_hostname)[8:-1])
+    except resolver.NXDOMAIN:
+        logging.warning("Unable to find any other couchdb pods")
+    except exception.DNSException as e:
         logging.error(e)
-        logging.warning('nslookup could not find other nodes.')
-    for i in nslookup.split():
-        if len(i.split('.')) == 7:
-            hostname = i[:-1]
-            if hostname not in hostnames:
-                hostnames.append(hostname)
+        logging.error("Unhandled pydns exception")
     return hostnames
 
 
@@ -54,9 +49,9 @@ def populate_nodes_db(pod_hostnames, cluster_admin):
             existing_hostnames.append(node_doc['id'])
 
         for pod_hostname in pod_hostnames:
-            node_doc = "db@{0}".format(pod_hostname)
+            node_doc = "couchdb@{0}".format(pod_hostname)
             if node_doc not in existing_hostnames:
-                r = s.put("{0}/db%40{1}".format(node_db_url, pod_hostname),
+                r = s.put("{0}/couchdb%40{1}".format(node_db_url, pod_hostname),
                           data='{}')
                 return r
     except requests.ConnectionError as e:
@@ -67,7 +62,7 @@ def populate_nodes_db(pod_hostnames, cluster_admin):
 
 
 def create_system_dbs(cluster_admin, system_dbs):
-    root_url = "http://localhost:5984/{1}"
+    root_url = "http://localhost:5984/{0}"
     s = requests.Session()
     s.auth = cluster_admin
 
